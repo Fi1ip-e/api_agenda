@@ -19,12 +19,12 @@ routes.post("/cadastrar", async (req, res) => {
 
     //VALIDAÇÕES
     const verificaEmail = await Contato.findOne({ where: { email: req.body.email } });
-    const verificarTelephone_1 = await Contato.findOne({where: {telephone_1: req.body.telephone_1}});
-    const verificarTelephone_2 = await Contato.findOne({where: {telephone_2: req.body.telephone_2}});
-    const verificarTelephone_1_is_2 = await Contato.findOne({where: {telephone_1: req.body.telephone_2}});
-    const verificarTelephone_2_is_1 = await Contato.findOne({where: {telephone_2: req.body.telephone_1}});
+    const verificarTelephone_1 = await Contato.findOne({ where: { telephone_1: req.body.telephone_1 } });
+    const verificarTelephone_2 = await Contato.findOne({ where: { telephone_2: req.body.telephone_2 } });
+    const verificarTelephone_1_is_2 = await Contato.findOne({ where: { telephone_1: req.body.telephone_2 } });
+    const verificarTelephone_2_is_1 = await Contato.findOne({ where: { telephone_2: req.body.telephone_1 } });
 
-    
+
     if (!req.body.first_name || typeof req.body.first_name == undefined || req.body.first_name == null) {
         erros.push({ message: "Nome não pode ser vazio e tem que ser válido" })
     }
@@ -49,13 +49,13 @@ routes.post("/cadastrar", async (req, res) => {
     //VERIFICAR TELEFONE
 
     if (verificarTelephone_1 || verificarTelephone_2) {
-        erros.push({message: "Ja existe esse número registrado em um contato"});
+        erros.push({ message: "Ja existe esse número registrado em um contato" });
     }
     if (verificarTelephone_1_is_2 || verificarTelephone_2_is_1) {
-        erros.push({message: "Ja existe esse número registrado em um contato (teste)"});
+        erros.push({ message: "Ja existe esse número registrado em um contato (teste)" });
     }
     if (req.body.telephone_1 == req.body.telephone_2) {
-    erros.push({message: "Erro ao cadastrar numero! Verifique se o número digitado nos dois campos ,não são iguais ou, pode ser que esteja armazenado em algum contato da agenda."});
+        erros.push({ message: "Erro ao cadastrar numero! Verifique se o número digitado nos dois campos ,não são iguais ou, pode ser que esteja armazenado em algum contato da agenda." });
     }
 
     //CAPTURA DE DOS ERROS
@@ -65,7 +65,7 @@ routes.post("/cadastrar", async (req, res) => {
 
 
     else {
-       await Contato.create(req.body).then(() => {
+        await Contato.create(req.body).then(() => {
 
             return res.json(
                 {
@@ -75,7 +75,31 @@ routes.post("/cadastrar", async (req, res) => {
 
             return res.json({ message: "Erro ao cadastrar contato! " + err });
         })
-    }
+    };
+
+});
+//DELETE
+routes.delete("/deletar/:id", async (req, res) => {
+
+    await Contato.destroy({ where: { id: req.params.id } }).then((contato) => {
+
+        return res.json({ message: "Contato excluido com sucesso!" });
+    }).catch((err) => {
+
+        return res.status(400).json({ message: "Erro ao excluir contato!" });
+    });
+});
+
+//ATUALIZAÇÃO
+routes.put('/editar', async (req, res) => {
+    
+    await Contato.update(req.body, { where: { id: req.body.id }}).then(() => {
+     
+        return res.json({message: "Contato atualizado com sucesso!"})
+    }).catch((err) => {
+        
+        return res.status(400).json({ message: "Erro ao editar!"});
+    });
 });
 
 module.exports = routes;
