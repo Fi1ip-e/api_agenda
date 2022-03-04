@@ -37,6 +37,7 @@ telephone_2: INTEGER Opicional,
 
 ## Sobre a aplicação:
 
+### Cadastro:
 A plicação não permite cadastrar algumas informações que ja estão na agenda:
 - O mesmo email;
 - Os mesmos telefones;
@@ -51,3 +52,7 @@ http://localhost:8080/contato/cadastrar
 	"telephone_1": 912345678,
 	"telephone_2": null
 }
+
+### Buscar:
+
+É possivel fazer buscas por email, nome e telefone(telephone_1) principal. Todos passados atraves da body

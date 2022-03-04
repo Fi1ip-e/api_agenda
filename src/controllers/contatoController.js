@@ -15,7 +15,7 @@ routes.get("/", async (req, res) => {
 //Visualização por email
 routes.get("/email", async (req, res) => {
 
-    await Contato.findAll({where: {email: req.body.email}}).then((email) => {
+    await Contato.findAll({ where: { email: req.body.email } }).then((email) => {
         return res.json(email);
     }).catch((err) => {
         res.json("Erro ao filtra email digitado." + err);
@@ -25,10 +25,31 @@ routes.get("/email", async (req, res) => {
 //Visualização por email
 routes.get("/name", async (req, res) => {
 
-    await Contato.findAll({where: {first_name: req.body.first_name}}).then((name) => {
+    await Contato.findAll({ where: { first_name: req.body.first_name } }).then((name) => {
         return res.json(name);
     }).catch((err) => {
         res.json("Erro ao filtra nome digitado." + err);
+    })
+});
+
+//PESQUISA POR NÚMERO
+
+
+routes.get("/number", async (req, res) => {
+
+    
+    await Contato.findOne({ where: { telephone_1: req.body.telephone_1 } }).then((number) => {
+
+        if (!number) {
+            res.json("Esse número não esta na base de contatos ou não esta salvo como opção principal")
+        }
+
+        else {
+
+            return res.json(number);
+        }
+    }).catch((err) => {
+        res.json("Erro ao filtra número digitado." + err);
     })
 });
 
@@ -112,13 +133,13 @@ routes.delete("/deletar/:id", async (req, res) => {
 
 //ATUALIZAÇÃO
 routes.put('/editar', async (req, res) => {
-    
-    await Contato.update(req.body, { where: { id: req.body.id }}).then(() => {
-     
-        return res.json({message: "Contato atualizado com sucesso!"})
+
+    await Contato.update(req.body, { where: { id: req.body.id } }).then(() => {
+
+        return res.json({ message: "Contato atualizado com sucesso!" })
     }).catch((err) => {
-        
-        return res.status(400).json({ message: "Erro ao editar!"});
+
+        return res.status(400).json({ message: "Erro ao editar!" });
     });
 });
 
