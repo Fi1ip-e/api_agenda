@@ -12,6 +12,26 @@ routes.get("/", async (req, res) => {
     });
 });
 
+//Visualização por email
+routes.get("/email", async (req, res) => {
+
+    await Contato.findAll({where: {email: req.body.email}}).then((email) => {
+        return res.json(email);
+    }).catch((err) => {
+        res.json("Erro ao filtra email digitado." + err);
+    })
+});
+
+//Visualização por email
+routes.get("/name", async (req, res) => {
+
+    await Contato.findAll({where: {first_name: req.body.first_name}}).then((name) => {
+        return res.json(name);
+    }).catch((err) => {
+        res.json("Erro ao filtra nome digitado." + err);
+    })
+});
+
 // CADASTRAR
 routes.post("/cadastrar", async (req, res) => {
 
@@ -48,7 +68,7 @@ routes.post("/cadastrar", async (req, res) => {
 
     //VERIFICAR TELEFONE
 
-    if (verificarTelephone_1 || verificarTelephone_2) {
+    if (verificarTelephone_1 || verificarTelephone_2 && verificarTelephone_2 == !null) {
         erros.push({ message: "Ja existe esse número registrado em um contato" });
     }
     if (verificarTelephone_1_is_2 || verificarTelephone_2_is_1) {
