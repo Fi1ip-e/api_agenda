@@ -8,7 +8,7 @@ const routes = require('./routes')
 app.use(express.json());
 app.use(cors());
 
-// ROTAS
+// ROTAS >>>>
 
 app.use("/", routes.contatos);
 app.use("/contato", routes.contatos);
